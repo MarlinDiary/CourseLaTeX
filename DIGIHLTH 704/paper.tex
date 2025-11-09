@@ -1,11 +1,13 @@
 \documentclass[sigconf]{acmart}
 \settopmatter{printacmref=false}
 \renewcommand\footnotetextcopyrightpermission[1]{}
-\pagestyle{plain}
+\pagestyle{empty}
+
+\usepackage{hyphenat}
 
 \begin{document}
 
-\title{Evaluating IDx-DR for Diabetic Retinopathy Screening}
+\title{Smartphone On-device AI for DR Pre-screening in Primary Care}
 
 \author{Chenye Ni}
 \email{cni586@aucklanduni.ac.nz}
@@ -18,125 +20,135 @@
 
 \maketitle
 
-\section{Introduction and Scope}
+\section{Introduction}
 
-Diabetic retinopathy (DR) is the leading cause of vision loss among people with diabetes worldwide. Recent epidemiology estimates that 22.27\% of individuals with diabetes have DR, with 103.12 million affected in 2020 and a projected 160.5 million by 2045 \citep{Teo2021Ophthalmology}. In the United States (US), the prevalence of DR in 2021 was 26.43\%, corresponding to 9.6 million people with DR, including 1.84 million with vision-threatening DR \citep{Lundeen2023JAMAOph}.
+Diabetic retinopathy (DR) is the most common blinding microvascular complication of diabetes. As global diabetes prevalence continues to rise, screening and early\hyp{}intervention systems are under substantial pressure \cite{IDFAtlas2025}. In 2020, DR accounted for about 1.07 million cases of blindness and a further 3.28 million cases of moderate\hyp{}to\hyp{}severe vision impairment worldwide---outcomes that are largely preventable with timely screening \cite{VLEG_Eye_2024}.
 
-Despite strong evidence that early detection and timely treatment can prevent the vast majority of DR-related vision loss, current screening systems face substantial gaps. In 2017, only 54.1\% of Medicare Part B fee-for-service beneficiaries with diabetes received an annual eye exam, with marked disparities by race/ethnicity and insurance status \citep{Lundeen2019MMWR}. Analyses of 2005–2008 NHANES data indicate that 73\% of people with DR were unaware of their condition \citep{Gibson2012AJPM}. Shortages of eye-care specialists, maldistribution of services, and low care adherence further amplify this public health problem.
+In Aotearoa New Zealand, DR is a leading cause of vision loss among working\hyp{}age adults \cite{RANZCO_2022_DR_Screening_NZ}. Yet meaningful coverage gaps persist, disproportionately affecting M\={a}ori and Pasifika communities. Evidence from Te Tai Tokerau (Northland) and the wider Auckland region highlights multiple barriers---including transport constraints, time costs, limited disease awareness, and rigid booking systems---that collectively depress screening participation in high\hyp{}risk groups, delay referrals that could be avoided, and exacerbate inequities \cite{Wolpert2023_NZMJ}.
 
-IDx-DR, now marketed as LumineticsCore, is an autonomous artificial intelligence diagnostic system developed by Digital Diagnostics Inc. In April 2018 it became the first fully autonomous AI diagnostic system authorized by the US Food and Drug Administration (FDA) via a De Novo request (DEN180001) \citep{FDA2018DEN180001}. The system uses convolutional neural networks to analyze non-mydriatic color fundus photographs acquired on the Topcon TRC-NW400; for each eye, one optic disc–centered and one macula-centered image are required \citep{FDA2018DEN180001}. At the point of care, it automatically detects more-than-mild diabetic retinopathy (mtmDR)—defined as Early Treatment Diabetic Retinopathy Study (ETDRS) severity level $\geq$35 and/or diabetic macular edema (DME)—and returns a binary clinical decision without specialist interpretation (mtmDR positive $\rightarrow$ refer; mtmDR negative $\rightarrow$ rescreen) \citep{Abramoff2018Pivotal,FDA2018DEN180001}.
+Artificial intelligence offers a path to narrow these gaps. Deep\hyp{}learning systems for DR detection have achieved ophthalmologist\hyp{}level performance on fundus photographs \cite{Gulshan2016JAMA}. Moreover, the successful deployment of autonomous systems such as IDx\hyp{}DR in primary\hyp{}care settings demonstrates that automated AI screening can operate safely and effectively outside specialist clinics, moving the screening ``front door'' closer to where patients receive routine care \cite{Abramoff2018NPJDM,FDA_DEN180001_2018}.
 
-This evaluation focuses on the system’s core function: detection of mtmDR. Under ETDRS grading, mtmDR corresponds to ETDRS level $\geq$35 or the presence of DME, encompassing moderate nonproliferative DR (NPDR) or worse and/or DME, including proliferative DR (PDR) \citep{ETDRS1991Report12}. The clinical rationale is clear: this threshold marks the inflection from lower to higher risk of progression and vision loss, warranting closer monitoring and potential intervention. Consistent with this, the American Diabetes Association’s 2025 Standards recommend prompt referral for any DME, moderate or worse NPDR, or any PDR \citep{ADA2025S12}. The intended users are non-ophthalmic clinicians in primary care settings, serving adult patients with diabetes without a prior DR diagnosis. Expected outcomes include increased early detection of mtmDR, timely referral, prevention of irreversible vision loss, and improved access and adherence by embedding screening within routine care pathways.
+However, current AI screening solutions still face deployment constraints. IDx\hyp{}DR, for example, depends on a tabletop non\hyp{}mydriatic fundus camera, presupposing a fixed site, stable power, and standardized operating conditions \cite{DigitalDiagnostics_Indications_2025}. Such infrastructure requirements limit flexibility in remote communities, mobile clinics, and settings without dedicated rooms---challenges that are particularly salient for rural M\={a}ori and Pasifika populations.
 
-\section{Provenance and Knowledge Sources}
+This report proposes an AI\hyp{}enabled mobile DR pre\hyp{}screening prototype tailored for non\hyp{}ophthalmic personnel in New Zealand primary healthcare. Target users include community nurses, general practitioners, and M\={a}ori health service workers, operating in community clinics, mobile units, and home\hyp{}visit contexts. By combining portable smartphone fundus imaging with automated AI analysis, the prototype aims to extend screening reach to the hardest\hyp{}to\hyp{}access populations, substantially increase coverage while maintaining clinical accuracy, and ultimately reduce avoidable vision loss and mitigate health inequities.
 
-\subsection{Training data sources and composition}
-The IDx\mbox{-}DR algorithm uses a deep learning architecture with multiple lesion\mbox{-}specific detectors for retinal biomarkers (e.g., microaneurysms, hemorrhages, exudates, neovascularization) \citep{Abramoff2018Pivotal}. Public sources do not disclose the provenance of the production training dataset for IDx\mbox{-}DR, including contributing institutions, geographic distribution, demographics, or sample sizes; this constitutes a transparency gap noted by ophthalmic AI reporting reviews \citep{Chen2024Transparency}. Prior technical descriptions from the developer group discuss patch\mbox{-}level training for lesion detectors, but the pivotal trial report and the FDA De Novo summary do not publish the production training set composition for IDx\mbox{-}DR \citep{Abramoff2018Pivotal,FDA2018DEN180001}. Ethical analyses argue that informed consent materials should include concise information about training data sources and characteristics \citep{Ursin2021InformedConsent}.
+\section{Background and Literature Review}
 
-\subsection{Ethical oversight and validation dataset}
-The pivotal prospective study enrolled 900 adults with diabetes across 10 U.S. primary care sites from January to July 2017, with Institutional Review Board approval at all sites and written informed consent from all participants; the study was registered on ClinicalTrials.gov (NCT02963441) \citep{Abramoff2018Pivotal}. The analyzable cohort had a median age of 59 years; 92.9\% had type 2 diabetes; race distribution was 63.4\% White and 28.6\% African American; the prevalence of mtmDR was 23.8\% \citep{Abramoff2018Pivotal}. The reference standard was established by the Wisconsin Fundus Photograph Reading Center (FPRC) using ETDRS grading with three validated graders and majority adjudication; diabetic macular edema was assessed with OCT per DRCR paradigms \citep{FDA2018DEN180001}.
+\textbf{Technical feasibility.} The combined use of smartphone\hyp{}based fundus imaging and AI has been empirically validated for accuracy across clinical and community settings. Rajalakshmi \textit{et~al.} (2018) reported 95.8\% sensitivity for automated DR detection on smartphone photographs, demonstrating that robust signal can be extracted from handheld capture \cite{Rajalakshmi2018Eye}. Extending this evidence, Malerbi \textit{et~al.} (2024) showed that a handheld, single\hyp{}image protocol achieved 90.48\% sensitivity and 90.65\% specificity, indicating that simplified capture workflows can still support reliable grading \cite{Malerbi2024OphthalmolSci}. To meet deployment needs in remote or connectivity\hyp{}limited settings, an on\hyp{}device approach is essential. Community\hyp{}based studies have verified the feasibility of \emph{offline} AI systems \cite{Natarajan2019JAMAOphthalmol,Jain2021IJO}, showing that DR algorithms can execute fully on device without network access, thereby enabling immediate feedback loops, reducing privacy risks, and maintaining service continuity during outages.
 
-\subsection{Model maintenance and update mechanism}
-IDx\mbox{-}DR is a ``locked'' autonomous algorithm for the authorized indication. The system was locked before trial initiation and placed under an independent Algorithm Integrity Provider that escrowed code and outputs and interdicted sponsor access during the study \citep{Abramoff2018Pivotal}. The FDA De Novo decision describes a change\mbox{-}control protocol: any modification that could significantly affect clinical functionality or performance specifications triggers a new premarket submission (e.g., 510(k)) prior to commercial introduction \citep{FDA2018DEN180001}. This design favors safety and predictability but limits adaptation to population shifts, imaging advances, or emerging evidence without regulated updates.
+\textbf{Operational feasibility.} Success hinges on the intended users---non\hyp{}ophthalmic personnel working in primary care. Evidence indicates that operational barriers can be mitigated through brief, structured training and continued remote feedback. In an urban primary\hyp{}care study, Queiroz \textit{et~al.} (2020) evaluated inexperienced health workers using a handheld smartphone\hyp{}based camera; following short training and ongoing tele\hyp{}supervision, by day~7 the proportion of images adequate for clinical decision\hyp{}making stabilized above 80\% \cite{Queiroz2020ActaDiabetol}. Complementarily, a nursing study reported 75\% agreement between nurse\hyp{}performed screening and ophthalmologist assessment, consistent with moderate agreement and supporting safe task\hyp{}shifting under protocolized supervision \cite{FernandezGutierrez2023NursRep}.
 
-\section{Usability and Interaction}
+\textbf{Standards and local frameworks.} To ensure rigor, usability, and local appropriateness, the prototype aligns with international standards and Aotearoa\hyp{}specific guidance. The design process will follow ISO~9241\hyp{}210 human\hyp{}centred design principles \cite{ISO9241-2102019}, requiring iterative cycles driven by explicit understanding of users, tasks, and contexts of use, with formative usability evaluations to optimize flows and error handling. Given the centrality of AI, reporting and design decisions will be aligned with the CONSORT\hyp{}AI extension \cite{Liu2020CONSORTAI}; this includes pre\hyp{}specifying human--AI interaction boundaries, eligibility criteria for input data, handling rules for ungradable images, and an error analysis plan. Finally, to address equity gaps experienced by M\={a}ori and Pasifika communities, the work will adopt an Aotearoa co\hyp{}design integrity framework targeting Level~3 shared governance and decision\hyp{}making, in order to build trust and ensure cultural appropriateness throughout requirements, prototyping, and evaluation \cite{GoodwinBoulton2024ShortGuide}.
 
-\subsection{System Interface and Clinical Workflow}
+\section{Domain Model}
 
-IDx\textsuperscript{\textregistered}\,–\,DR uses a three–tier architecture comprising a Windows client interface, a Topcon TRC\mbox{-}NW400 nonmydriatic fundus camera, and a cloud\mbox{-}based analysis server. The standard workflow requires operators to acquire four images per patient (two per eye: disc\mbox{-}centered and macula\mbox{-}centered), each with a minimum resolution of 1000\,$\times$\,1000 pixels. Images are submitted over a secure internet connection to the cloud service, which returns one of three binary outcomes within seconds to under one minute: “more\mbox{-}than\mbox{-}mild diabetic retinopathy detected,” “not detected,” or “insufficient image quality” \citep{Abramoff2018Pivotal,FDA2018DEN180001}.
+Figure~\ref{fig:domain} presents the core concept structure and workflow of the AI\hyp{}enabled mobile DR pre\hyp{}screening application. The model centers on two stakeholder groups: primary users (community nurses, general practitioners, or M\={a}ori health workers) and patients.
 
-\subsection{Nielsen Heuristic Evaluation}
+\textbf{Data inputs.} The workflow begins with two inputs. (1) \emph{Patient registration:} the user records the patient National Health Index (NHI), basic history, and obtains informed consent. (2) \emph{Image acquisition:} the user captures bilateral fundus images using a portable smartphone\hyp{}based camera.
 
-\textbf{Heuristic 1: Visibility of system status (strong).} The client continuously surfaces processing state via progress indicators: "Exam received" $\rightarrow$ "Queued" $\rightarrow$ "Processing started" $\rightarrow$ "Processing complete," and a lower\mbox{-}right status reports internet "service available\slash unavailable." During acquisition, the client provides immediate quality feedback with specific problem labels (e.g., out\mbox{-}of\mbox{-}focus, field\mbox{-}of\mbox{-}view offset), enabling real\mbox{-}time correction by operators. An inter\mbox{-}operator reproducibility of 99.6\% supports consistency of status communication \citep{FDA2018DEN180001}.
+\textbf{AI processing pipeline.} First, images undergo pre\hyp{}processing to optimize quality. Next is a decision point: \emph{image\hyp{}quality assessment}. An on\hyp{}device classifier evaluates analyzability; if inadequate, the system prompts immediate re\hyp{}capture, forming a just\hyp{}in\hyp{}time feedback loop. If adequate, the image proceeds to \emph{DR classification}, where a deep convolutional network assigns a five\hyp{}level ordinal severity (including an indicator for more\hyp{}than\hyp{}mild DR, mtmDR) and outputs a confidence score.
 
-\textbf{Heuristic 2: Match between system and the real world (mixed).} The interface employs terminology familiar to primary\mbox{-}care staff (macula, optic disc, ETDRS grading), yet technical constructs such as \textit{imageability} require additional explanation. The standardized 4\mbox{-}hour training includes a “retinal anatomical landmarks” module to address knowledge gaps. However, reliance on stable internet connectivity and cloud services contrasts with offline operation typical of some point\mbox{-}of\mbox{-}care devices, creating potential deployment barriers in settings with poor network infrastructure.
+\textbf{Structured outputs.} The system generates an immediate screening report that displays the DR risk grade, a clear referral recommendation, and an image\hyp{}quality score.
 
-\textbf{Heuristic 3: User control and freedom (key weakness).} This is the most salient usability limitation. The workflow functions as a one\mbox{-}way decision gate: operators cannot override an algorithmic “insufficient image quality” determination. In an independent Dutch validation, IDx\mbox{-}DR rejected 33.7\% of images that human graders accepted at a rate of 80.4\%, highlighting limited operator override and a resubmission\mbox{-}only pathway without a human\mbox{-}quality override or expert consultation route \citep{vanDerHeijden2018Acta}.
+\textbf{Clinical pathway.} The primary user reviews the report, makes a decision based on the recommendation (for example, referral for high\hyp{}risk patients), and communicates the result to the patient, closing the screening loop.
 
-\textbf{Heuristic 4: Consistency and standards (strong).} The UI follows standard Windows patterns (menu bar, dialogs, action buttons), offers complete multilingual UI and documentation translations, and presents a uniform configuration layout (checkboxes, dropdowns, “Save” button). Thumbnails, lists, and status views maintain visual consistency across tasks \citep{FDA2018DEN180001}.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{domain.png}
+  \caption{Domain model of the AI\hyp{}enabled mobile DR pre\hyp{}screening application.}
+  \label{fig:domain}
+\end{figure}
 
-\textbf{Heuristic 5: Error prevention (mixed).} Multiple safeguards are implemented: real\mbox{-}time quality feedback, automatic exam grouping to prevent image mix\mbox{-}ups, and a standardized four\mbox{-}image protocol. In the pivotal trial, a 4\% “insufficient image quality” rate reflects conservative thresholds that reduce false outputs, but it introduces operational friction—only 64.7\% completed the protocol on the first attempt; 8.5\% required one retry; 3.2\% two retries; 1.97\% three retries; 3.4\% four retries; and 0.5\% five retries. The system does not proactively warn prior to dilation; operators often infer small pupils only after repeated failures, and 23.6\% of participants ultimately required pharmacologic dilation \citep{Abramoff2018Pivotal}.
+\section{System Design and Architecture}
 
-\textbf{Heuristic 7: Flexibility and efficiency of use (limited adaptability).} Novices and experts follow the same workflow. There are no documented keyboard shortcuts, batch operations, or expert accelerators. The only efficiency feature described is automatic grouping in the exam selection tool. This rigidity can conflict with primary\mbox{-}care throughput demands.
+We design the architecture as a fully on\hyp{}device mobile application that minimizes reliance on network connectivity, thereby improving accessibility in remote settings and protecting patient privacy. Figure~\ref{fig:system} details this multilayer architecture, covering the complete flow from the user interface to local data persistence.
 
-\textbf{Heuristic 10: Help and documentation (comprehensive resources).} IDx\mbox{-}DR provides an in\mbox{-}app electronic manual, an online training portal, email/phone support, and customer success representatives. A 4\mbox{-}hour training coupled with 10 hands\mbox{-}on practice cases enables previously untrained operators to achieve a 96\% success rate \citep{FDA2018DEN180001}.
+\subsection{Frontend interaction and validation layer}
 
-\subsection{Accessibility Considerations}
+The system flow begins at the frontend UI, which consists of two core screens:
 
-With respect to accessibility, the system supports multiple languages but does not document accommodations for operators with disabilities: the interface relies on color coding (e.g., red boxes for quality issues) without a confirmed color\mbox{-}vision\mbox{-}safe alternative, and manual camera positioning requires physical dexterity without apparent assistive technology integration. Documentation demands a moderately high reading level; operators are expected to understand medical terminology (retinopathy, macula, ETDRS) and technical concepts (DICOM, protocol, imageability). A high\mbox{-}school or equivalent educational level is recommended \citep{FDA2018DEN180001}.
+\emph{Registration screen.} This is the primary entry point for users (e.g., community nurses) to record patient information. It includes fields for the National Health Index (NHI), basic demographics, and informed consent.
 
-\section{Reverse Engineering or Explainability}
+\emph{Camera screen.} This is the central interaction surface. It provides a real\hyp{}time viewfinder to assist alignment on the fundus and includes controls to capture bilateral retinal images.
 
-\subsection{Decision mechanism}
+When a user submits data or images, the input\hyp{}validation module starts immediately. This module performs local checks, such as verifying the NHI format and the completeness of image metadata. To ensure data accuracy, when a network is available it asynchronously queries an external NHI service to validate identity; however, the core screening flow continues to function offline.
 
-IDx\textsuperscript{\textregistered}\,–\,DR uses a two–stage pipeline that differs from end–to–end black–box classifiers. First, an image–quality algorithm validates basic acquisition constraints (field of view, focus, color balance, exposure). Only quality–eligible submissions proceed to diagnosis \citep{FDA2018DEN180001,Abramoff2018Pivotal}. 
+\subsection{Core AI processing pipeline}
 
-For diagnosis, lesion–specific detectors analyze the four acquired images in parallel. Public sources describe convolutional models for disease detection but do not disclose the exact architecture or weights \citep{Abramoff2018Pivotal,FDA2018DEN180001}. Prior work and patents from the same group detail red–lesion (microaneurysm/hemorrhage) detection using morphology and matched filtering, which motivates the lesion–centric approach \citep{US7474775B2}. Clinically, microaneurysms are typically $\le$125\,\textmu m in diameter, whereas larger, irregular “red lesions” often reflect hemorrhages \citep{Shukla2023StatPearlsDR,Yu1998ArchOph}. 
+After validation, the workflow controller takes over. It coordinates all steps in the AI pipeline in sequence.
 
-A proprietary information–fusion step combines detector evidence across the four images and compares a scalar index against a fixed decision threshold to produce a binary result at the patient level. The participant–level decision uses a worst–eye rule: if either eye is positive for more–than–mild DR (mtmDR), the output is “mtmDR detected”; otherwise “mtmDR not detected” (or “insufficient image quality” if imageability fails) \citep{Abramoff2018Pivotal,FDA2018DEN180001}.
+\textbf{1. Image preprocessing.} All input images are first routed to the preprocessor. This module performs key standardization steps: resizing to $512\times512$ pixels, normalizing brightness, and enhancing contrast. These steps are essential to feed subsequent AI models with consistent, quality\hyp{}optimized inputs.
 
-\subsection{Simplified illustrative logic}
+\textbf{2. Quality\hyp{}assessment model.} We select MobileNetV3\nobreakdash-Small as the assessment model. MobileNetV3 is designed for mobile CPU optimization and low\hyp{}resource scenarios, which is critical for on\hyp{}device computer vision and an immediate feedback loop \cite{Howard2019MobileNetV3}. The model outputs a quality score in $[0,1]$. If the score is below the $0.7$ threshold, the workflow controller rejects the image and guides the user to retake it.
 
-\noindent\textit{This is an explanatory sketch for readability only; it is not the proprietary algorithm.}
+\textbf{3. DR classification model.} This module adopts EfficientNet\hyp{}B0. The model delivers strong performance on five\hyp{}level DR grading and is known for its balance between computational efficiency and accuracy \cite{Arora2024SciRepEfficientNetDR}.
 
-\begin{verbatim}
-IF input_has_4_images_per_protocol() THEN
-  IF passes_quality(FOV, focus, color, exposure) THEN
-    scores = {
-      MA: detect_microaneurysms(imgs),
-      HEM: detect_hemorrhage(imgs),
-      EX: detect_exudates(imgs),
-      NV: detect_neovascularization(imgs),
-      DME: assess_center_involved_DME(imgs)
-    }
-    index = w1*MA + w2*HEM + w3*EX + w4*NV + w5*DME
-    LEFT  = eye_index(scores, "left")
-    RIGHT = eye_index(scores, "right")
-    PATIENT = max(LEFT, RIGHT)   // worst-eye logic
-    IF PATIENT >= THRESHOLD THEN
-      OUTPUT = "mtmDR detected"      
-    ELSE
-      OUTPUT = "mtmDR not detected"  
-    ENDIF
-  ELSE
-    OUTPUT = "insufficient image quality"  
-  ENDIF
-ELSE
-  OUTPUT = "protocol incomplete"           
-ENDIF
-\end{verbatim}
+\subsection{Report generation and data persistence}
 
-\subsection{Rule pattern examples for clinical intuition}
+After the AI pipeline completes, the report generator compiles patient information from the validation module, the quality score from the assessment model, and the DR grade with confidence from the classification model. It then produces a structured PDF screening report and automatically assigns referral urgency based on the DR grade.
 
-\noindent\textit{For intuition only, not device rules.} Features that often drive “mtmDR+” under ETDRS–based reference standards include: widespread intraretinal hemorrhages, venous beading, or IRMA consistent with moderate–to–severe NPDR; any neovascularization; or center–involved DME. Conversely, absence of these findings with few microaneurysms and no DME aligns with “mtmDR–” \citep{ETDRS1991Report12,ADA2025S12}.
+The generated report appears immediately on the results dashboard. Users can view risk indicators, browse the history of screenings, and, when needed, submit high\hyp{}risk cases via an external e\nobreakdash-Referral interface.
 
-\subsection{Transparency and explainability}
+To enable offline functionality and preserve privacy, all data are stored securely on the device. An encrypted SQLite database stores patient records and screening history. Captured images are temporarily stored as encrypted local files. The two core AI model files are also stored locally and loaded by the AI module at app launch, ensuring that the core screening functionality does not require internet connectivity.
 
-External transparency is limited. The authorized device returns only a discrete decision at point of care: “mtmDR detected,” “mtmDR not detected,” or “insufficient image quality.” Public labeling and the pivotal report do not provide saliency maps, per–lesion overlays, confidence scores, per–eye probabilities, or severity grades for clinical users \citep{FDA2018DEN180001,Abramoff2018Pivotal}. Bioethics analyses argue that informed consent materials should disclose high–level training–data characteristics and decision logic to support patient autonomy \citep{Ursin2021InformedConsent}.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{system.png}
+  \caption{System design and multilayer architecture of the mobile DR pre\hyp{}screening application.}
+  \label{fig:system}
+\end{figure}
 
-\section{Clinical Quality and Impact}
+\section{Prototype and Mock\hyp{}ups}
 
-\subsection{Diagnostic accuracy}
+Figure~\ref{fig:ux} presents the core user experience (UX) flow and explains how the design meets the specific needs of non\hyp{}ophthalmic users.
 
-In the pivotal primary care trial, IDx\textsuperscript{\textregistered}\,–\,DR achieved sensitivity 87.2\% (95\% CI: 81.8–91.2) and specificity 90.7\% (95\% CI: 88.3–92.7), correctly identifying 173 of 198 mtmDR\,+ cases among 819 analyzable participants \citep{Abramoff2018Pivotal}. The device detected all ETDRS level~43 or higher cases, including all 16 proliferative DR cases; sensitivity for vision‐threatening DR was 97.4\% (37/38). For macular edema, sensitivity was 96.6\% for clinically significant DME from fundus photos and 84.2\% for center‐involved DME by OCT \citep{Abramoff2018Pivotal,FDA2018DEN180001}.
+\textbf{Patient Registration.} The workflow begins with a clear form for capturing the National Health Index (NHI) number and basic information. A mandatory \texttt{Informed Consent} toggle acts as a critical ethical control point; until consent is obtained, the \texttt{Start Capture} button remains disabled.
 
-A 2025 meta‐analysis of 13 studies (13{,}233 participants) reported pooled sensitivity 0.95 (95\% CI: 0.82–0.99), pooled specificity 0.91 (95\% CI: 0.84–0.95), and SROC AUC 0.95 for IDX‐DR, with performance varying across settings \citep{Khan2025AJO}. Real‐world studies illustrate this variability: in the Hoorn primary care system the sensitivity was 68\% (95\% CI: 56–79\%) and specificity 86\% (95\% CI: 84–88\%) \citep{vanDerHeijden2018Acta}. In a Polish screening cohort directly comparing two systems, IDx‐DR showed sensitivity 99.3\% and specificity 68.9\% for referable DR, with PPV 48.1\% and NPV 99.5\%; RetCAD showed sensitivity 89.4\% and specificity 94.8\% \citep{Grzybowski2025OphTher}.
+\textbf{Image Capture.} This is the primary interaction screen for non\hyp{}specialists. It is more than a camera viewfinder; it integrates an AI real\hyp{}time guidance system. A circular on\hyp{}screen prompt box and a top status indicator provide immediate, proactive feedback before capture, helping users achieve proper focus and alignment to maximize first\hyp{}try success.
 
-\subsection{Alignment with clinical guidelines}
+\textbf{Image Rejection.} This is the most important error\hyp{}handling example in the prototype. If a captured image is poor quality, the system does not display a generic failure. Instead, it provides clear, actionable AI feedback so that, after tapping \texttt{Retake Image} to return to \emph{Image Capture}, the user can more easily correct the previous error.
 
-IDx\textsuperscript{\textregistered}\,–\,DR is authorized to detect “more than mild DR,” operationalized as ETDRS level~$\geq$35 and/or DME, using a worst‐eye patient‐level decision \citep{FDA2018DEN180001,Abramoff2018Pivotal}. This threshold aligns with guidance that patients with moderate or worse NPDR and/or DME warrant prompt specialist evaluation, while those with no or mild DR may be followed at longer intervals \citep{ADA2025S12}. The conservative mtmDR cutoff prioritizes sensitivity to minimize missed disease, which can increase referral volume relative to stricter treatment thresholds; deployment should match local capacity and follow structured referral pathways \citep{ADA2025S12,FDA2018DEN180001}.
+\textbf{Processing.} This page is the transition on the success path once image quality has passed evaluation. It provides positive confirmation that the difficult capture task has been completed and shows a loading animation to make explicit that a second\hyp{}stage AI analysis is running on device.
 
-\section{Summary and Reflection}
+\textbf{Results.} This page is the AI deliverable. The most prominent elements are the top risk indicator and explicit action instructions, ensuring that the first thing users see is what to do rather than complex clinical data. Detailed AI outputs and confidence scores are intentionally placed in a collapsible \texttt{AI Analysis Details} region, applying progressive disclosure to avoid information overload without sacrificing explainability.
 
-As the first fully autonomous AI diagnostic system authorized by the FDA, IDx\textsuperscript{\textregistered}\,–\,DR fills a crucial gap in diabetic retinopathy screening. Its core value lies in deploying specialist\mbox{-}level diagnostic capability to the front lines of primary care, directly addressing foundational pain points in traditional screening pathways. Evidence from the ACCESS randomized controlled trial is most compelling: the AI arm achieved a 100\% screening completion rate (95\% CI: 95.5–100\%), whereas the standard referral arm reached only 22\% (95\% CI: 14.2–32.4\%), a difference of 78 percentage points (\(p < 0.001\)); more importantly, the system fully eliminated baseline disparities in screening attributable to race, income, and educational attainment \citep{Wolf2024NatCommun}.
+\textbf{Confirmation.} This page closes the loop after the user taps \texttt{Generate e\nobreakdash-Referral}. It acts as a receipt, clearly confirming two completed tasks: ``e\hyp{}Referral has been generated'' and ``Report saved to local device storage''. The \texttt{Screen New Patient} button provides the next clear starting point.
 
-However, the very autonomy that constitutes its core advantage also raises profound ethical challenges. The opacity of the algorithm conflicts with the verifiability principles of evidence\mbox{-}based medicine—clinicians cannot understand the AI’s reasoning process, cannot explain the diagnostic basis to patients, and cannot effectively override when skeptical. When clinicians passively accept algorithmic determinations, independent analytic capacity and clinical judgment may atrophy over time. The principle of informed consent is likewise challenged—patients cannot engage the algorithm in dialogue, cannot learn what features the AI “saw,” and cannot grasp the degree of diagnostic certainty \citep{Ursin2021InformedConsent}. To its credit, Digital Diagnostics has explicitly accepted legal responsibility for system performance, setting an important precedent for accountability frameworks in autonomous AI.
 
-The system’s technical limitations must also be acknowledged. A 10–32\% false\mbox{-}positive rate drives over\mbox{-}referral; device dependence (compatibility limited to Topcon cameras), the constraints of a locked algorithm without continual learning, and restrictive exclusion criteria all temper clinical generalizability and fitness for purpose.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{ux.png}
+  \caption{Prototype UX flow and key screens of the mobile DR pre\hyp{}screening application.}
+  \label{fig:ux}
+\end{figure}
 
-Based on the foregoing analysis, this evaluation adopts a conditionally favorable recommendation. The system is well suited for deployment in primary care and diabetes specialty clinics—especially in underserved areas with ophthalmologist shortages—best used as a complementary tool within a comprehensive eye\mbox{-}health strategy rather than a replacement. Key directions for improvement include integrating explainability techniques, reducing the false\mbox{-}positive rate, expanding device compatibility, and addressing the digital divide through policy measures—ensuring adequate Medicaid reimbursement, providing implementation grants for safety\mbox{-}net institutions, and supporting rural broadband infrastructure.
+\section{Ethical and Practical Considerations}
 
-The broader significance of IDx\textsuperscript{\textregistered}\,–\,DR lies in demonstrating the technical feasibility of autonomous medical AI, but its success turns on a fundamental choice: whether to deploy primarily in affluent systems where implementation is easiest, or to prioritize the marginalized populations with the greatest unmet need. Only when innovation proactively bridges rather than widens health inequities can AI credibly fulfill its promise of improving care for all.
+\subsection{Algorithmic fairness and bias}
+Although AI performs well for DR detection, algorithmic bias may exacerbate existing health inequities. Performance of deep\hyp{}learning systems depends strongly on the composition of training datasets. If the core classifier is trained mainly on European or Asian fundus images, diagnostic accuracy may decline for M\={a}ori and Pasifika populations. A study in Indigenous Australians confirms that independent external validation is necessary before applying AI to minority groups \cite{Chia2024BJO_IndigenousDR}. Therefore, before entering clinical trials, the model must be re\hyp{}validated on a dataset that includes sufficient M\={a}ori and Pasifika patients, in order to quantify and correct any potential subgroup performance differences.
+
+\subsection{Data sovereignty and privacy}
+To truly serve M\={a}ori communities, the project must respect and enact the principles of M\={a}ori data sovereignty \cite{TMR2018Principles}. Our on\hyp{}device processing and encrypted local\hyp{}storage architecture directly responds to these principles. This design reduces the risk of data leakage at a technical level and, more importantly, aligns procedurally with expectations of collective and individual control over information, forming a cornerstone for trust with communities.
+
+\subsection{Consent, explainability, and clinical integration}
+The \texttt{Informed Consent} toggle ensures that consent is obtained before operation and that patients understand AI can err. Showing AI confidence scores on the results page is key to practicing explainable AI; it supports nurses' clinical judgment and helps them explain findings to patients. To mitigate automation bias (over\hyp{}reliance on AI), pre\hyp{}deployment training must establish clear guidance: when AI outputs conflict with clinical judgment, human judgment takes precedence.
+
+\subsection{Validation, deployment, and monitoring}
+A responsible AI tool requires a complete pathway from validation to continuous monitoring. Prior to deployment, and following the CONSORT\hyp{}AI extension \cite{Liu2020CONSORTAI}, a prospective clinical trial should be conducted in real New Zealand primary\hyp{}care settings to assess impacts on screening coverage and clinical outcomes. After deployment, a continuous post\hyp{}deployment performance\hyp{}monitoring mechanism is required, with regular audits to guard against model drift. Monitoring must include ongoing analysis of AI error cases across ethnic groups to ensure sustained fairness.
+
+\section{Limitations and Future Work}
+
+\textbf{Hardware and environment heterogeneity.} The core technical challenge is uncertainty from device and environmental heterogeneity. Although smartphone\hyp{}based fundus imaging is feasible, camera sensor specifications, lens optics, and processing pipelines vary widely across devices. In remote clinics, these hardware factors interact with uncontrolled ambient lighting, handheld stability, and patient cooperation, producing complex performance variability.
+
+\textbf{Clinical accountability and governance.} A second constraint is ambiguity in clinical responsibility. When non\hyp{}ophthalmic nurses make referral decisions based on AI outputs, later misclassification raises unresolved questions within current legal and governance frameworks: developer liability, deploying institution responsibility, or operator accountability. This uncertainty creates legal risk and can erode patient trust, becoming an implicit barrier to clinical adoption.
+
+\textbf{System capacity constraints.} The prototype assumes adequate downstream ophthalmology capacity. If screening coverage increases while referral pathways are saturated, a diagnostic bottleneck shift may occur: high\hyp{}risk patients are identified promptly but experience treatment delays due to limited specialist resources, increasing anxiety and inequity.
+
+\textbf{Future work.} Priority tasks include prospective studies in New Zealand primary\hyp{}care settings to quantify diagnostic performance across device\hyp{}environment combinations and qualitative interviews to explore user experience. In parallel, collaboration with legal experts and health administrators is required to establish a clear governance framework and shared\hyp{}responsibility model, creating a foundation for safe clinical integration.
+
+
+
+
 
 \bibliographystyle{vancouver}
 \bibliography{references}
