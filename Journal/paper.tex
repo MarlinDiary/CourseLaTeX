@@ -1,0 +1,114 @@
+\documentclass[sigconf]{acmart}
+\settopmatter{printacmref=false}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\pagestyle{empty}
+
+\usepackage{hyphenat}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-\do_\do.}
+
+\begin{document}
+
+\title{COMPSCI 778 Internship Journal - Milestone 1}
+
+\author{Chenye Ni}
+\email{cni586@aucklanduni.ac.nz}
+\affiliation{%
+  \institution{University of Auckland}
+  \country{New Zealand}
+}
+
+\acmConference[COMPSCI 778]{}{December 2025}{Auckland, New Zealand}
+
+\maketitle
+
+
+\section{Project Background and Work Environment}
+
+This internship is part of the compulsory course COMPSCI~778 (Summer Internship) in the Master of Information Technology (MInfoTech) programme at the University of Auckland and has a duration of ten weeks. The internship is conducted in an on-campus mode, designed to provide students with a project development experience that closely resembles a real workplace, while still allowing them to receive guidance and support from supervisors in an academic environment. A dual-supervisor model is adopted: the academic supervisor is Vita~Tsai, who oversees academic progress and learning outcomes; the industry supervisor is Nick~Yager, who provides guidance and feedback from an industry perspective.
+
+The internship workspace is located on Level~7 of the Fisher Building in central Auckland, at 18~Waterloo Quadrant, Auckland Central. This floor is dedicated to the COMPSCI~778 internship programme and accommodates around ten independent project teams. The workspace is equipped with basic working facilities, including external monitors and power outlets, enabling students to use their own laptops for development work. In addition, there is a shared common area with a microwave and refrigerator, which provides convenient options for meals and refreshments throughout the day.
+
+The internship operates on a team-based structure --- each team consists of five MInfoTech students and is independently responsible for a different project. In my team, we adopted a flat management structure in which all five members held equal roles, with no fixed team leader, and decisions were made collaboratively with an emphasis on cooperation and shared responsibility.
+
+During the internship period, the work schedule followed a full-time pattern, with five working days per week and eight working hours per day. The team adopted a daily stand-up meeting mechanism from agile development: at a fixed time each day, the team held an internal meeting in which each member reported, in turn, what they had completed the previous day, what they planned to work on that day, and whether they had encountered any blockers or needed support. In addition, a formal check-in meeting with the supervisors was scheduled every two weeks to review progress for the period, discuss any issues, and obtain guidance. In terms of collaboration tools, the team used Notion for project documentation and task tracking, GitHub for version control and collaborative development, and Microsoft Teams for day-to-day communication and online meetings.
+
+Although this internship was conducted on campus --- technically within a university setting rather than an external company --- its working hours, team collaboration model, and project management processes closely simulated those of a real software development workplace. The flat team structure, daily stand-ups, and fortnightly check-ins created a valuable opportunity for me to practise agile development methodologies within a supportive academic environment.
+
+\section{Project Description}
+
+\subsection{Project Background and Literature Review}
+
+As the pace of modern urban life continues to accelerate, people's demand for convenient and healthy diet management is growing steadily. Traditional recipe applications often have limited functionality, lack personalized recommendations and intelligent assistance, and struggle to meet users' diverse needs across the entire cooking process. In recent years, the rapid development of artificial intelligence technologies has created new possibilities for intelligent recipe applications. Studies have shown that machine-learning-based personalized diet recommendation systems can provide customized advice according to users' health goals, taste preferences, and dietary restrictions, effectively improving the efficiency of diet management~\cite{Praveen2024PersonalizedDiet}. In addition, deep-learning-based food recognition technologies and collaborative filtering algorithms have been widely applied in the field of personalized nutrition recommendation~\cite{Armand2024AIMLNutrition}.
+
+In terms of cooking assistance technologies, gesture recognition, as a touch-free interaction modality, offers unique advantages in kitchen environments. Because users' hands may be covered with oil or water during cooking, traditional touchscreen operations are not convenient. Researchers have developed cooking assistant systems based on augmented reality head-mounted displays, in which users can control the playback of step-by-step cooking instructions through natural gestures and complete the entire cooking process without touching any device~\cite{Majil2022ARCookingGuide}. Similarly, gesture recognition systems based on Kinect sensors extract human joint positions and achieve a cooking gesture recognition accuracy of 90.6\%~\cite{Hijioka2015CookingAssistantGesture}.
+
+At the implementation level, React Native, as a cross-platform mobile application development framework, allows developers to use a single codebase to build native-level user experiences for both iOS and Android platforms simultaneously. Its hot-reload feature and rich ecosystem of third-party libraries make it an ideal choice for rapidly developing food-related applications, significantly reducing development costs and shortening time to market.
+
+\subsection{Project Objectives}
+
+This project, named ``Larder,'' aims to develop a cross-platform intelligent recipe mobile application that supports both Android and iOS platforms. The target user group of the project is modern urban residents who wish to simplify cooking workflows and improve dietary health through intelligent tools. The application will deeply integrate artificial intelligence technologies to provide a one-stop solution covering recipe discovery, diet planning, and ingredient procurement.
+
+The specific functional objectives include: (1) providing a home page that recommends personalized recipe content based on algorithms; (2) supporting users to import custom recipes from external sources in multiple formats, including URLs, images, text, and even videos; (3) offering a diet planning feature that allows users to add dishes to their daily or weekly meal schedules; (4) integrating a shopping-list feature that, after scanning the current contents of the refrigerator, intelligently compares inventory and adds only the necessary ingredients to the purchase list; (5) supporting gesture recognition on the step-by-step cooking instruction page so that when users cannot conveniently operate their phone with their hands, they can still turn pages or control playback via mid-air gestures; and (6) ensuring that all recommendations are based on users' personal preference settings, including calorie limits, budget ranges, and dietary restrictions.
+
+The core highlight of the project lies in its deeply integrated AI assistant. Users can ask about how to cook specific dishes via text, or scan the ingredients in their refrigerator and have the AI recommend dishes that can be prepared with the available materials. The AI can not only retrieve recommendations from a large database but also autonomously generate high-quality original recipes. In addition, the AI assistant can help users schedule activities, plan their diets, and manage their shopping lists. Finally, user data will support multi-platform synchronization to ensure a seamless experience across different devices.
+
+\subsection{Completed Work}
+
+Over the past two weeks, the team has completed the system requirements analysis and technology selection. On the front end, the project uses the React Native framework together with Expo for cross-platform development and adopts TypeScript as the programming language to improve code maintainability and type safety. On the back end, the project uses the .NET framework and C\# to build API services, while at the data layer it adopts a hybrid architecture in which SQLite is used for local storage and PostgreSQL is used for cloud data persistence.
+
+In terms of functionality, the team has completed the development of the following core modules: the home page interface (currently without the recommendation algorithm), the diet planning (Plan) module, the shopping-list (Grocery) module, the basic AI dialogue feature, the step-by-step cooking instruction page, the user login and authentication system, and the gesture-based interaction feature.
+
+\subsection{Future Plans and Milestones}
+
+Over the next two weeks, development will focus on the following areas: (1) implementing Internet-of-Things (IoT) functionality by connecting a smart scale device to the application to enable precise ingredient weighing; (2) completing the development and integration of the home page recommendation algorithm; (3) implementing a user preference system that supports multi-dimensional settings such as calorie intake, budget, and dietary restrictions; (4) developing a recipe rating feature; (5) implementing cross-device data synchronization; (6) developing advanced AI chat capabilities that support richer contextual understanding and multi-turn dialogue; and (7) implementing recipe sharing features.
+
+\section{Cultivation and Application of Professionalism}
+
+\subsection{Enhancement of Professional Ethics Awareness}
+
+During the project development process, I gained a deeper understanding of the importance of professional ethics. In one of the daily stand-up meetings, the teaching assistant raised two key requirements concerning user data handling and AI-generated content: first, user data must be handled with extreme care, and sensitive information such as users' dietary preferences, health information, and location data must be protected with appropriate safeguards; second, there must be a robust feedback mechanism for AI-generated content that allows users to evaluate and correct recipes or other content recommended by the AI. I consider these requirements highly reasonable, and they also made me aware of the seriousness of these issues. As developers, we should not only focus on implementing features but also bear responsibility for our users, ensuring that the product meets ethical standards beyond its technical aspects. The cultivation of this sense of professional ethics is of profound significance for my future career development.
+
+\subsection{Generation of Creative Ideas and Innovative Practice}
+
+Many of the innovative features in the project stem from the collective intelligence of the team. Signature features such as gesture recognition, smart-scale connectivity, and refrigerator scanning did not arise from the inspiration of a single person but were gradually formed during team brainstorming sessions through communication and the collision of ideas among all members. This collaborative ideation process made me realize that good ideas often require the collision and iteration of different perspectives. An initial concept proposed by one person can often evolve into a more refined and feasible solution after being supplemented and challenged by other team members.
+
+\subsection{Teamwork and Communication Skills}
+
+Compared with other teams, the most distinctive characteristic of our team is the frequency of our meetings and the depth of our discussions. Because of our flat management structure, team members can express their views freely in a low-pressure and egalitarian environment. This model may lead to more disagreements than in other teams, but an obvious advantage is that we can freely point out the limitations of each other's viewpoints while always focusing on the issues themselves, without allowing discussions to escalate into emotional conflicts or involve personal feelings or concerns about saving face. Although frequent meetings appear to consume more time, in the end our solutions for each detail of the product were superior to any individual’s initial proposal.
+
+The benefits of the daily stand-up meetings for team collaboration are particularly evident. Through the stand-ups, we can clearly identify the work priorities for the day and plan the eight-hour work schedule in blocks of one to two hours, forming multiple actionable micro-tasks. The stand-ups also help us understand each member’s progress, facilitating communication and mutual support. In this process, I learned a great deal from my teammates; even in the area of user experience design, where I had previously been most confident, I was able to identify my own shortcomings from their feedback, and this humble learning attitude benefited me greatly.
+
+\subsection{Project Development Process}
+
+The team adopted the Kanban methodology for project management and used GitHub Projects as the task-tracking tool. The task cards on the Kanban board clearly displayed three statuses---``To Do,'' ``In Progress,'' and ``Done''---allowing the entire team to see the project progress at a glance.
+
+In terms of code management, the team strictly followed a branch-based development strategy. Each member carried out development work on their own feature branches and submitted pull requests upon completion. Each pull request had to be reviewed by at least two team members to confirm code quality, logical correctness, and adherence to coding standards before it could be merged into the main branch (\texttt{main}). This mechanism effectively ensured the stability of the codebase while also providing opportunities for team members to learn from one another.
+
+The gesture recognition feature is a typical example of this process and originated from a brainstorming meeting. At that time, we were discussing the interaction design of the step-by-step cooking instruction page when one teammate suddenly asked, ``When the user is stir-frying and their hands are covered in oil, how do they go to the next step?'' This question stunned everyone for a moment---we had previously focused on the page layout and interaction design but had overlooked the basic scenario in which users’ hands are not free while cooking. After discussion, the idea of gesture recognition ultimately prevailed: users would only need to wave their hands in front of the camera to turn the page, without touching the screen or relying on voice control that could be disturbed by noise from the range hood.
+
+During implementation, the teammate responsible for this feature reported in the stand-up that they had encountered compatibility issues---the gesture recognition libraries they had tried behaved inconsistently on iOS and Android. After joint analysis, we decided to switch to a lower-level solution. Two days later, he demonstrated a smoothly running prototype at the stand-up; when he waved his hand and the screen turned pages accurately, the whole team applauded. In the code review stage, two other teammates identified shortcomings in handling edge cases, and after several rounds of revisions the feature was finally merged. From the initial question of ``What should users do when their hands are covered in oil?'' to the final usable feature, what truly made it possible was the collaboration of the entire team.
+
+\section{Interim Outcomes and Reflection}
+
+\subsection{Interim Outcomes}
+
+After two weeks of development, the team has completed the requirements analysis and technology selection for the project and successfully implemented several core functional modules, including the home page interface, the diet-planning feature, the shopping-list feature, the basic AI dialogue feature, the step-by-step cooking instruction page, the user login and authentication system, and the gesture-based interaction feature. Overall, the project is progressing smoothly and has laid a solid foundation for subsequent feature development.
+
+\subsection{Personal Reflection}
+
+Before starting this internship, my greatest aspiration was to become an independent developer. In retrospect, however, this was less an aspiration and more a form of avoidance. Because I was not accustomed to handling interpersonal relationships, reluctant to interact with others, and unwilling to face potential friction in collaborative work settings, I set this goal for myself.
+
+However, the collaborative experience of the past two weeks has completely changed my perspective. I have discovered that collaboration has a profound appeal of its own. I once mistakenly believed that I could do everything better than others, but this turned out not to be true. My teammates may not be as strong as I am in coding or engineering execution, but they have a much clearer understanding of task requirements, a better grasp of the instructor's expectations, and sharper thinking when it comes to defining features---all of which are areas where I can and should learn from them.
+
+The internship, as it turns out, is not as intimidating as I had imagined. I have found that I can, in fact, get along well with others, and I have also noticed that I have changed significantly compared with the beginning of the internship. Most notably, when others present a different point of view, my first reaction is no longer displeasure; instead, I am genuinely interested in discussing their ideas further. This is because I have come to realize that I am not necessarily the smartest person in the room.
+
+\subsection{Practical Application of Theoretical Knowledge}
+
+In this internship, I applied knowledge from multiple courses to real-world development. The skills from COMPSCI~702 (Reverse Engineering) helped me extract key assets from other software---assets that would have been difficult for a five-person team to obtain through conventional means. The React knowledge I learned in COMPSCI~732 is closely related to React Native, enabling me to quickly ramp up on front-end development work. In addition, the group projects and software development methodologies covered in COMPSCI~718 and COMPSCI~719 were put into practice in our day-to-day team collaboration and project management.
+
+
+\bibliographystyle{vancouver}
+\bibliography{references}
+
+\end{document}
