@@ -23,7 +23,7 @@
 \maketitle
 
 
-\section{Project Background and Work Environment}
+\section{Work Environment}
 
 This internship is part of the compulsory course COMPSCI~778 (Summer Internship) in the Master of Information Technology (MInfoTech) programme at the University of Auckland and has a duration of ten weeks. The internship is conducted in an on-campus mode, designed to provide students with a project development experience that closely resembles a real workplace, while still allowing them to receive guidance and support from supervisors in an academic environment. A dual-supervisor model is adopted: the academic supervisor is Vita~Tsai, who oversees academic progress and learning outcomes; the industry supervisor is Nick~Yager, who provides guidance and feedback from an industry perspective.
 
@@ -37,31 +37,13 @@ Although this internship was conducted on campus --- technically within a univer
 
 \section{Project Description}
 
-\subsection{Project Background and Literature Review}
+\subsection{Project Background}
 
-As the pace of modern urban life continues to accelerate, people's demand for convenient and healthy diet management is growing steadily. Traditional recipe applications often have limited functionality, lack personalized recommendations and intelligent assistance, and struggle to meet users' diverse needs across the entire cooking process. In recent years, the rapid development of artificial intelligence technologies has created new possibilities for intelligent recipe applications. Studies have shown that machine-learning-based personalized diet recommendation systems can provide customized advice according to users' health goals, taste preferences, and dietary restrictions, effectively improving the efficiency of diet management~\cite{Praveen2024PersonalizedDiet}. In addition, deep-learning-based food recognition technologies and collaborative filtering algorithms have been widely applied in the field of personalized nutrition recommendation~\cite{Armand2024AIMLNutrition}.
 
-In terms of cooking assistance technologies, gesture recognition, as a touch-free interaction modality, offers unique advantages in kitchen environments. Because users' hands may be covered with oil or water during cooking, traditional touchscreen operations are not convenient. Researchers have developed cooking assistant systems based on augmented reality head-mounted displays, in which users can control the playback of step-by-step cooking instructions through natural gestures and complete the entire cooking process without touching any device~\cite{Majil2022ARCookingGuide}. Similarly, gesture recognition systems based on Kinect sensors extract human joint positions and achieve a cooking gesture recognition accuracy of 90.6\%~\cite{Hijioka2015CookingAssistantGesture}.
 
-At the implementation level, React Native, as a cross-platform mobile application development framework, allows developers to use a single codebase to build native-level user experiences for both iOS and Android platforms simultaneously. Its hot-reload feature and rich ecosystem of third-party libraries make it an ideal choice for rapidly developing food-related applications, significantly reducing development costs and shortening time to market.
+\subsection{Literature Review}
 
-\subsection{Project Objectives}
 
-This project, named ``Larder,'' aims to develop a cross-platform intelligent recipe mobile application that supports both Android and iOS platforms. The target user group of the project is modern urban residents who wish to simplify cooking workflows and improve dietary health through intelligent tools. The application will deeply integrate artificial intelligence technologies to provide a one-stop solution covering recipe discovery, diet planning, and ingredient procurement.
-
-The specific functional objectives include: (1) providing a home page that recommends personalized recipe content based on algorithms; (2) supporting users to import custom recipes from external sources in multiple formats, including URLs, images, text, and even videos; (3) offering a diet planning feature that allows users to add dishes to their daily or weekly meal schedules; (4) integrating a shopping-list feature that, after scanning the current contents of the refrigerator, intelligently compares inventory and adds only the necessary ingredients to the purchase list; (5) supporting gesture recognition on the step-by-step cooking instruction page so that when users cannot conveniently operate their phone with their hands, they can still turn pages or control playback via mid-air gestures; and (6) ensuring that all recommendations are based on users' personal preference settings, including calorie limits, budget ranges, and dietary restrictions.
-
-The core highlight of the project lies in its deeply integrated AI assistant. Users can ask about how to cook specific dishes via text, or scan the ingredients in their refrigerator and have the AI recommend dishes that can be prepared with the available materials. The AI can not only retrieve recommendations from a large database but also autonomously generate high-quality original recipes. In addition, the AI assistant can help users schedule activities, plan their diets, and manage their shopping lists. Finally, user data will support multi-platform synchronization to ensure a seamless experience across different devices.
-
-\subsection{Completed Work}
-
-Over the past two weeks, the team has completed the system requirements analysis and technology selection. On the front end, the project uses the React Native framework together with Expo for cross-platform development and adopts TypeScript as the programming language to improve code maintainability and type safety. On the back end, the project uses the .NET framework and C\# to build API services, while at the data layer it adopts a hybrid architecture in which SQLite is used for local storage and PostgreSQL is used for cloud data persistence.
-
-In terms of functionality, the team has completed the development of the following core modules: the home page interface (currently without the recommendation algorithm), the diet planning (Plan) module, the shopping-list (Grocery) module, the basic AI dialogue feature, the step-by-step cooking instruction page, the user login and authentication system, and the gesture-based interaction feature.
-
-\subsection{Future Plans and Milestones}
-
-Over the next two weeks, development will focus on the following areas: (1) implementing Internet-of-Things (IoT) functionality by connecting a smart scale device to the application to enable precise ingredient weighing; (2) completing the development and integration of the home page recommendation algorithm; (3) implementing a user preference system that supports multi-dimensional settings such as calorie intake, budget, and dietary restrictions; (4) developing a recipe rating feature; (5) implementing cross-device data synchronization; (6) developing advanced AI chat capabilities that support richer contextual understanding and multi-turn dialogue; and (7) implementing recipe sharing features.
 
 \section{Cultivation and Application of Professionalism}
 
